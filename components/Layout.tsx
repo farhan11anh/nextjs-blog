@@ -1,8 +1,14 @@
 // components/Layout.tsx
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Head from 'next/head'; //
 
-const Layout: React.FC = ({ children }: React.PropsWithChildren<{}>) => {
+interface LayoutProps {
+    children: React.ReactNode;
+    title?: string; // Step 2: Add a title prop
+}
+
+const Layout: React.FC<LayoutProps> = ({ children, title = 'Blog - Farhan' }: React.PropsWithChildren<LayoutProps>) => {
   const router = useRouter();
 
 const isActive = (path: string) => {
@@ -11,6 +17,9 @@ const isActive = (path: string) => {
 
 return (
     <>
+    <Head> {}
+        <title>{title || 'Default Title'}</title>
+      </Head>
         <nav className="navbar flex items-center justify-center gap-3 p-4 bg-gray-800 text-white sticky top-0 z-10">
             <Link href="/">
                 <span className={`text-lg font-bold ${isActive('/')}`}>Posts</span>
