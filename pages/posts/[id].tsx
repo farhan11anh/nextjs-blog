@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import api from '../../utils/api';
 import PostDetail from '../../components/PostDetail';
 
+
 interface PostPageProps {
   post: any;
   comments: any;
