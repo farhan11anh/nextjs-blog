@@ -25,22 +25,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // ]);
 
   let post;
-  try {
-    post = (await api.get(`/posts/${id}`)).data.data
-  } catch (error) {
-    error
-  }
-  let comments;
-  try {
-    comments = (await api.get(`/posts/${id}/comments`)).data.data
-  } catch (error) {
-    error
-  }
   let users;
   try {
-    users = (await api.get(`/users/6990701`)).data.data
+    post = (await api.get(`/posts/${id}`)).data.data;
+    let usersId = post.user_id;
+
+    console.log('hasil post -> ', post);
+    
+    users = await api.get(`/users/${usersId}`);
+    users = users.data.data;
   } catch (error) {
-    error
+    console.error(error);
+  }
+
+
+  let comments;
+  try {
+    comments = (await api.get(`/posts/${id}/comments`)).data.data;
+  } catch (error) {
+    console.error(error);
   }
 
   // console.log('hasil users', userRes);

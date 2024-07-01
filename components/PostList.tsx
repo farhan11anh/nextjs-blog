@@ -20,8 +20,8 @@ const PostList: React.FC<Props> = ({ posts, handleDetailClick }) => {
       <div className="grid grid-cols-3 gap-3">
         {posts.map((post) => (
           <div key={post.id} className="h-full">
-            <div className="bg-white rounded-lg shadow p-4 pb-16 text-black h-full relative">
-              <h2 className="text-xl font-semibold">{post.title}</h2>
+            <div className="bg-white rounded-lg shadow p-4 pb-16 text-gray-600 h-full relative">
+              <h2 className="text-xl font-bold">{post.title}</h2>
               <p>{post.body}</p>
               <div className="absolute bottom-0 left-0 p-4">                
                 <button
