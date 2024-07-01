@@ -1,44 +1,132 @@
-import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import api from '../../utils/api';
 import UserList from '../../components/UserList';
 import UserForm from '../../components/UserForm';
+import Pagination from '../../components/Pagination';
+import Modal from '../../components/Modal';
+import DeleteModal from '../../components/DeleteModal';
 
-interface UsersPageProps {
-  users: any[]; // Ideally, define a more specific type than any[]
-}
-
-const UsersPage: React.FC<UsersPageProps> = () => {
+const UsersPage: React.FC = () => {
+  const router = useRouter();
   const [users, setUsers] = useState([]);
-    // Function to fetch users
-  const fetchUsers = async () => {
-    const response = await api.get('/users');
-    setUsers(response.data.data);
-  };
-  
-  const handleSubmit = async (userData: { name: string; email: string, gender: string, status: string }) => {
-    try {
-      // Replace 'your/api/endpoint' with your actual API endpoint
-      const response = await api.post('/users', userData);
-      await fetchUsers();
-      console.log('User created:', response.data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
 
-      // Handle success (e.g., show a message, redirect, etc.)
+  const fetchUsers = async (page: number, name: string = '') => {
+    const response = await api.get(`/users?page=${page}&name=${name}`);
+    setUsers(response.data.data);
+    setTotalPages(response.data.meta.pagination.pages);
+  };
+
+  const handleSubmit = async (userData: { id?: number; name: string; email: string; gender: string; status: string }) => {
+    try {
+      if (userData.id) {
+        await api.put(`/users/${userData.id}`, userData);
+      } else {
+        await api.post('/users', userData);
+      }
+      setIsModalOpen(false);
+      await fetchUsers(currentPage, searchTerm);
     } catch (error) {
-      console.error('Error creating user:', error);
-      // Handle error (e.g., show error message)
+      console.error('Error saving user:', error);
+    }
+  };
+
+  const handleEdit = (user: { id: number; name: string; email: string; gender: string; status: string }) => {
+    setModalData(user);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = (userId: number) => {
+    setDeleteUserId(userId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (deleteUserId !== null) {
+      try {
+        await api.delete(`/users/${deleteUserId}`);
+        setIsDeleteModalOpen(false);
+        setDeleteUserId(null);
+        await fetchUsers(currentPage, searchTerm);
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
     }
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    const page = parseInt(router.query.page as string, 10) || 1;
+    const name = (router.query.name as string) || '';
+    setCurrentPage(page);
+    setSearchTerm(name);
+    fetchUsers(page, name);
+  }, [router.query.page, router.query.name]);
+
+  const handlePageChange = (page: number) => {
+    router.push(`/users?page=${page}&name=${searchTerm}`, undefined, { shallow: true });
+    setCurrentPage(page);
+    fetchUsers(page, searchTerm);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearchSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    router.push(`/users?page=1&name=${searchTerm}`, undefined, { shallow: true });
+    setCurrentPage(1);
+    fetchUsers(1, searchTerm);
+  };
 
   return (
-    <div>
-      <h1>Create User</h1>
-      <UserForm onSubmit={handleSubmit} />
-      <UserList users={users} />
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl text-gray-600 font-bold mb-4">Users</h1>
+      <button
+        onClick={() => {
+          setModalData({});
+          setIsModalOpen(true);
+        }}
+        className="bg-blue-500 text-white rounded py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+      >
+        Add User
+      </button>
+      <form onSubmit={handleSearchSubmit} className="mb-4 flex items-center">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search by name"
+          className="border border-gray-300 rounded-l py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white rounded-r py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Search
+        </button>
+      </form>
+      <UserList users={users} onEdit={handleEdit} onDelete={handleDelete} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <UserForm onSubmit={handleSubmit} initialData={modalData} />
+        </Modal>
+      )}
+      {isDeleteModalOpen && (
+        <DeleteModal
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDelete}
+          message="Are you sure you want to delete this user?"
+        />
+      )}
     </div>
   );
 };

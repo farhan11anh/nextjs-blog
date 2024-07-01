@@ -90,28 +90,40 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (title) params.title = title;
   if (body) params.body = body;
 
-  const res = await api.get('/posts', { params });
+  try {
+    const res = await api.get('/posts', { params });
 
-  const limit = 10; // Assuming 10 posts per page
-  const totalPosts = res.data.meta.pagination.total; // Total number of posts
-  const totalPages = Math.ceil(totalPosts / limit); // Calculate total number of pages
+    const limit = 10; // Assuming 10 posts per page
+    const totalPosts = res.data.meta.pagination.total; // Total number of posts
+    const totalPages = Math.ceil(totalPosts / limit); // Calculate total number of pages
 
-  if (page > totalPages) {
+    if (page > totalPages) {
+      return {
+        redirect: {
+          destination: `/?page=${totalPages}${title ? `&title=${encodeURIComponent(title as string)}` : ''}${body ? `&body=${encodeURIComponent(body as string)}` : ''}`,
+          permanent: false,
+        },
+      };
+    }
+
     return {
-      redirect: {
-        destination: `/?page=${totalPages}${title ? `&title=${encodeURIComponent(title as string)}` : ''}${body ? `&body=${encodeURIComponent(body as string)}` : ''}`,
-        permanent: false,
+      props: {
+        posts: res.data.data,
+        page,
+        totalPages,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+
+    // Handle the error gracefully, such as showing a fallback UI or redirecting to an error page
+    return {
+      props: {
+        error: true, // Set an error flag or pass error information to the component
       },
     };
   }
-
-  return {
-    props: {
-      posts: res.data.data,
-      page,
-      totalPages,
-    },
-  };
 };
+
 
 export default Home;

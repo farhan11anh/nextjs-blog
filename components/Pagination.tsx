@@ -1,92 +1,46 @@
+import React from 'react';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
 };
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-  const generatePageNumbers = () => {
-    const pageNumbers = [];
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-      }
-    } else {
-      const startPage = Math.max(1, currentPage - 2);
-      const endPage = Math.min(totalPages, currentPage + 2);
+const StyledPagination = styled(Pagination)(({ theme }) => ({
+  '& .MuiPaginationItem-root': {
+    borderRadius: '0.25rem',
+    margin: theme.spacing(0.5),
+  },
+  '& .Mui-selected': {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark,
+    },
+  },
+}));
 
-      if (startPage > 1) {
-        pageNumbers.push(1);
-        if (startPage > 2) {
-          pageNumbers.push('...');
-        }
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
-      }
-
-      if (endPage < totalPages) {
-        if (endPage < totalPages - 1) {
-          pageNumbers.push('...');
-        }
-        pageNumbers.push(totalPages);
-      }
-    }
-    return pageNumbers;
+const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+  const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    onPageChange(page);
   };
 
-  const pageNumbers = generatePageNumbers();
-
   return (
-    <div className="pagination flex items-center justify-center space-x-2">
-      <button
-        onClick={() => onPageChange(1)}
-        disabled={currentPage === 1}
-        className="px-2 py-1 rounded-md bg-gray-200 text-gray-600 disabled:bg-gray-300 disabled:text-gray-400"
-      >
-        &laquo; First
-      </button>
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="px-2 py-1 rounded-md bg-gray-200 text-gray-600 disabled:bg-gray-300 disabled:text-gray-400"
-      >
-        &lsaquo; Prev
-      </button>
-      {pageNumbers.map((page, index) =>
-        typeof page === 'number' ? (
-          <button
-            key={index}
-            onClick={() => onPageChange(page)}
-            className={`px-2 py-1 rounded-md w-16 ${
-              currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
-            }`}
-          >
-            {page}
-          </button>
-        ) : (
-          <span key={index} className="px-2 py-1">
-            ...
-          </span>
-        )
-      )}
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="px-2 py-1 rounded-md bg-gray-200 text-gray-600 disabled:bg-gray-300 disabled:text-gray-400"
-      >
-        Next &rsaquo;
-      </button>
-      <button
-        onClick={() => onPageChange(totalPages)}
-        disabled={currentPage === totalPages}
-        className="px-2 py-1 rounded-md bg-gray-200 text-gray-600 disabled:bg-gray-300 disabled:text-gray-400"
-      >
-        Last &raquo;
-      </button>
-    </div>
+    <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" className="pagination">
+      <StyledPagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handleChange}
+        shape="rounded"
+        color="primary"
+        boundaryCount={1}
+        siblingCount={1}
+      />
+    </Stack>
   );
 };
 
-export default Pagination;
+export default CustomPagination;

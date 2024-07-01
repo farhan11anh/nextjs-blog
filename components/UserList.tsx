@@ -1,43 +1,45 @@
 import React from 'react';
-import Link from 'next/link';
+import { Table, TableHead, TableBody, TableRow, TableCell, Button, Card, CardContent, makeStyles } from '@mui/material';
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
 
-type Props = {
-  users: User[];
-};
-
-const UserList: React.FC<Props> = ({ users }) => {
+const UserList: React.FC<{ users: any[]; onEdit: (user: any) => void; onDelete: (id: number) => void }> = ({ users, onEdit, onDelete }) => {
+  
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Users</h1>
-      <table className="min-w-full  border border-gray-200">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">Email</th>
-            <th className="py-2 px-4 border-b">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className=" shadow">
-              <td className="py-2 px-4 border-b">{user.name}</td>
-              <td className="py-2 px-4 border-b">{user.email}</td>
-              <td className="py-2 px-4 border-b">
-                <Link href={`/users/${user.id}`}>
-                  <span className="text-blue-500 hover:underline">View Details</span>
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Card>
+      <CardContent>
+        <div>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Gender</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map(user => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.gender}</TableCell>
+                  <TableCell>{user.status}</TableCell>
+                  <TableCell>
+                    <Button onClick={() => onEdit(user)} variant="contained" color="primary" size="small" className="mr-2">
+                      Edit
+                    </Button>
+                    <Button onClick={() => onDelete(user.id)} variant="contained" color="secondary" size="small">
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

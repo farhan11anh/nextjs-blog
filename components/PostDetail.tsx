@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import { Grid, Card, CardContent, Typography } from '@mui/material';
 
 type Comment = {
   id: number;
@@ -28,52 +28,49 @@ type Props = {
 
 const PostDetail: React.FC<Props> = ({ post, comments, user }) => {
   return (
-    <div className="container mx-auto p-4">
-      <div className="bg-white h-[90vh] rounded-lg shadow-md p-6">
-        <div className="mb-8">
-          <h1 className="text-2xl text-gray-600 font-bold mb-2 text-center">{post.title}</h1>
-          <div className='flex flex-row justify-end' >
-            <div className="text-gray-400"><span className='font-semibold' >Author </span> : {user.name} ({user.email}) </div>
-          </div>
-          {/* <Image
-            className='rounded-lg shadow-md mx-auto'
-            src="https://source.unsplash.com/technology/500x500"
-            width={500}
-            height={500}
-            alt="Picture of the author"
-          /> */}
-          <div className="mt-5">
-            <p className="text-gray-600">{post.body}</p>
-          </div>
-        </div>
+    <Grid container justifyContent="center">
+      <Grid item xs={12} md={8} lg={6}> {/* Adjusted width for larger screens */}
+        <Card variant="outlined" className="mt-8">
+          <CardContent>
+            <Typography variant="h4" component="h1" align="center" gutterBottom>
+              {post.title}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary" align="right" gutterBottom>
+              {user?.name ? `${user.name} ${user.email ? `(${user.email})` : ''}` : 'Author: -'}
+            </Typography>
+            <Typography variant="body1" align="justify" paragraph>
+              {post.body}
+            </Typography>
+          </CardContent>
+        </Card>
 
-        {/* <div className="mb-8">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold">Author</h2>
-            <p className="text-gray-600">{user.name}</p>
-            <p className="text-gray-600">Email: {user.email}</p>
-          </div>
-        </div> */}
-
-        <div>
-          <h3 className="text-lg text-gray-600 font-semibold mb-4">Comments</h3>
+        <div className="mt-8">
+          <Typography variant="h5" component="h2" gutterBottom>
+            Comments
+          </Typography>
           {comments.length === 0 ? (
-            <p className="text-gray-600">No comments exist.</p>
+            <Typography variant="body1" color="textSecondary">
+              No comments exist.
+            </Typography>
           ) : (
             <ul className="space-y-4">
               {comments.map((comment) => (
-                <li key={comment.id} className="p-4 bg-gray-300 rounded">
-                  <div className='text-gray-700 font-bold' >{comment.name}</div>
-                  <p className="text-gray-800">
-                    {comment.body}
-                  </p>
+                <li key={comment.id}>
+                  <Card variant="outlined" className="p-4">
+                    <Typography variant="subtitle1" className="font-bold" gutterBottom>
+                      {comment.name}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {comment.body}
+                    </Typography>
+                  </Card>
                 </li>
               ))}
             </ul>
           )}
         </div>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
