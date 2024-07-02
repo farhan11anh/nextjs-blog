@@ -88,7 +88,8 @@ const UsersPage: React.FC = () => {
 
   return (
     <div className="container w-9/12 mx-auto p-4">
-      <h1 className="text-2xl text-gray-600 font-bold mb-4">Users</h1>
+      <h1 className="text-2xl text-gray-600 font-bold mb-4">Users List</h1>
+      <div className='flex flex-row justify-between' >
       <button
         onClick={() => {
           setModalData({});
@@ -113,6 +114,8 @@ const UsersPage: React.FC = () => {
           Search
         </button>
       </form>
+      </div>
+
       <UserList users={users} onEdit={handleEdit} onDelete={handleDelete} />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       {isModalOpen && (

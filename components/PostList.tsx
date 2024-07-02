@@ -45,8 +45,7 @@ const PostList: React.FC<Props> = ({ posts, handleDetailClick, error }) => {
 
   if(posts) {
     return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-xl font-bold mb-4 text-gray-600">Blog Posts</h1>
+      <div className="container mx-auto">
         <Grid container spacing={3}>
           {posts.map((post) => (
             <Grid item xs={12} sm={6} md={4} key={post.id}>

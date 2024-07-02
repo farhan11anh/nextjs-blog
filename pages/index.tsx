@@ -50,29 +50,33 @@ const Home = ({ posts, page, totalPages }: HomeProps) => {
   };
 
   return (
-    <div className='flex flex-col w-9/12 mx-auto' >
+    <div className='flex flex-col w-9/12 mx-auto mt-3' >
+      <h1 className="text-2xl text-gray-600 font-bold mb-4">Post List</h1>
       <div className="flex flex-wrap justify-center mt-5">
-        <form onSubmit={handleSearch} className="flex justify-center space-x-2">
-          <input
-            type="text"
-            name="title"
-            value={searchTitle}
-            placeholder="Search by title"
-            onChange={(e) => setSearchTitle(e.target.value)}
-            className="border border-gray-300 rounded-md px-2 py-1 text-gray-600" // Modified style to have black text
-          />
-          <input
-            type="text"
-            name="body"
-            value={searchBody}
-            placeholder="Search by body"
-            onChange={(e) => setSearchBody(e.target.value)}
-            className="border border-gray-300 rounded-md px-2 py-1 text-gray-600" // Modified style to have black text
-          />
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Search
-          </button>
-        </form>
+        <div className="flex flex-row justify-between w-full mb-4">
+          <div></div>
+          <form onSubmit={handleSearch} className="flex justify-center space-x-2">
+            <input
+              type="text"
+              name="title"
+              value={searchTitle}
+              placeholder="Search by title"
+              onChange={(e) => setSearchTitle(e.target.value)}
+              className="border border-gray-300 rounded-md px-2 py-1 text-gray-600" // Modified style to have black text
+            />
+            <input
+              type="text"
+              name="body"
+              value={searchBody}
+              placeholder="Search by body"
+              onChange={(e) => setSearchBody(e.target.value)}
+              className="border border-gray-300 rounded-md px-2 py-1 text-gray-600" // Modified style to have black text
+            />
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+              Search
+            </button>
+          </form>
+        </div>
 
         <PostList posts={posts} handleDetailClick={handleDetailClick} />
       </div>

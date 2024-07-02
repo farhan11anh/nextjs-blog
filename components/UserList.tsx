@@ -26,12 +26,14 @@ const UserList: React.FC<{ users: any[]; onEdit: (user: any) => void; onDelete: 
                   <TableCell>{user.gender}</TableCell>
                   <TableCell>{user.status}</TableCell>
                   <TableCell>
-                    <Button onClick={() => onEdit(user)} variant="contained" color="primary" size="small" className="mr-2">
-                      Edit
-                    </Button>
-                    <Button onClick={() => onDelete(user.id)} variant="contained" color="secondary" size="small">
-                      Delete
-                    </Button>
+                    <div className='flex flex-row gap-4' >
+                      <Button onClick={() => onEdit(user)} variant="contained" color="primary" size="small" className="mr-2">
+                        Edit
+                      </Button>
+                      <Button onClick={() => onDelete(user.id)} variant="contained" color="secondary" size="small">
+                        Delete
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
