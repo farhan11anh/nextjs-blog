@@ -55,14 +55,14 @@ const Home = ({ posts, page, totalPages }: HomeProps) => {
       <div className="flex flex-wrap justify-center mt-5">
         <div className="flex flex-row justify-between w-full mb-4">
           <div></div>
-          <form onSubmit={handleSearch} className="flex justify-center space-x-2">
+          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-2 justify-center md:space-x-2">
             <input
               type="text"
               name="title"
               value={searchTitle}
               placeholder="Search by title"
               onChange={(e) => setSearchTitle(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-gray-600" // Modified style to have black text
+              className="border border-gray-300 rounded-md px-2 py-1 text-gray-600 w-40" // Modified style to have black text
             />
             <input
               type="text"
@@ -70,9 +70,9 @@ const Home = ({ posts, page, totalPages }: HomeProps) => {
               value={searchBody}
               placeholder="Search by body"
               onChange={(e) => setSearchBody(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 text-gray-600" // Modified style to have black text
+              className="border border-gray-300 rounded-md px-2 py-1 text-gray-600 w-40" // Modified style to have black text
             />
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+            <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded-md w-40">
               Search
             </button>
           </form>

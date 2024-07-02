@@ -89,31 +89,32 @@ const UsersPage: React.FC = () => {
   return (
     <div className="container w-9/12 mx-auto p-4">
       <h1 className="text-2xl text-gray-600 font-bold mb-4">Users List</h1>
-      <div className='flex flex-row justify-between' >
-      <button
-        onClick={() => {
-          setModalData({});
-          setIsModalOpen(true);
-        }}
-        className="bg-blue-500 text-white rounded py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-      >
-        Add User
-      </button>
-      <form onSubmit={handleSearchSubmit} className="mb-4 flex items-center">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Search by name"
-          className="border border-gray-300 rounded-l py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
-        />
+      <div className='flex flex-col md:flex-row justify-between' >
         <button
-          type="submit"
-          className="bg-blue-500 text-white rounded-r py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onClick={() => {
+            setModalData({});
+            setIsModalOpen(true);
+          }}
+          className="bg-blue-500 text-white rounded py-1 px-4 w-fit hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
         >
-          Search
+          Add User
         </button>
-      </form>
+        <form onSubmit={handleSearchSubmit} className="mb-4 flex flex-col-reverse sm:flex-row-reverse">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white rounded-r py-1 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Search
+          </button>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search by name"
+            className="border border-gray-300 rounded-l py-1 px-2 w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+          />
+
+        </form>
       </div>
 
       <UserList users={users} onEdit={handleEdit} onDelete={handleDelete} />

@@ -7,7 +7,7 @@ const UserList: React.FC<{ users: any[]; onEdit: (user: any) => void; onDelete: 
   return (
     <Card>
       <CardContent>
-        <div>
+        <div className='w-full overflow-x-auto' >
           <Table>
             <TableHead>
               <TableRow>
