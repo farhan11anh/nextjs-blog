@@ -53,17 +53,14 @@ const PostList: React.FC<Props> = ({ posts, handleDetailClick, error }) => {
               <StyledCard>
                 <CardContent style={{ flex: 1 }}>
                   <Typography variant="h6" component="h2" gutterBottom>
-                    {post.title}
+                    {post.title.length > 100 ? `${post.title.slice(0, 100)}...` : post.title}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    {post.body}
+                    {post.body.length > 100 ? `${post.body.slice(0, 100)}...` : post.body}
                   </Typography>
                 </CardContent>
                 <div style={{ textAlign: 'center', paddingTop: '16px', paddingBottom: '16px' }}>
-                  <StyledButton
-                    variant="contained"
-                    onClick={() => handleDetailClick(post.id)}
-                  >
+                  <StyledButton variant="contained" onClick={() => handleDetailClick(post.id)}>
                     Read more
                   </StyledButton>
                 </div>

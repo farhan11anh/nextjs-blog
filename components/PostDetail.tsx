@@ -44,7 +44,7 @@ const PostDetail: React.FC<Props> = ({ post, comments, user }) => {
           </CardContent>
         </Card>
 
-        <div className="mt-8">
+        <div className="mt-8 text-gray-600">
           <Typography variant="h5" component="h2" gutterBottom>
             Comments
           </Typography>

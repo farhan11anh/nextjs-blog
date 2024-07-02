@@ -50,7 +50,7 @@ const Home = ({ posts, page, totalPages }: HomeProps) => {
   };
 
   return (
-    <div className='flex flex-col' >
+    <div className='flex flex-col w-9/12 mx-auto' >
       <div className="flex flex-wrap justify-center">
         <form onSubmit={handleSearch} className="flex justify-center space-x-2">
           <input
