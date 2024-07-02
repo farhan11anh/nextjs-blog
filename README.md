@@ -16,7 +16,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/farhan11anh/nextjs-blog.git
 ```
 
 2. Install dependencies:
