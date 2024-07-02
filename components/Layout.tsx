@@ -10,9 +10,11 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, title = 'Blog - Farhan' }: React.PropsWithChildren<LayoutProps>) => {
   const router = useRouter();
+  const { pathname } = router;
 
 const isActive = (path: string) => {
-  return router.pathname === path ? 'active text-red-500' : '';
+  return pathname === path || (path === '/' && pathname.startsWith('/posts')) ? 'text-blue-500' : '';
+  // return router.pathname === path ? 'active text-red-500' : '';
 };
 
 return (
